@@ -1,0 +1,1052 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hospital & Management — Admin Panel (Frontend)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+    :root {
+  /* Clean White Theme */
+  --bg: #ffffff; /* Pure white background */
+  --card: #f9f9fb; /* Very light gray for card backgrounds */
+  --muted: #64748b; /* Muted gray for secondary text (kept) */
+  --accent: #007bff; /* Deep attractive blue for primary actions */
+  --accent-2: #38a1ff; /* Lighter blue for secondary actions/hovers */
+  --glass: rgba(240, 240, 240, 0.7); /* Light, subtle glass effect */
+  --success: #28a745; /* Green for success */
+  --danger: #dc3545; /* Red for danger */
+  --warning: #ffc107; /* Yellow for warning */
+  --text: #212529; /* Darker, professional black for main text */
+  --radius: 10px;
+  --container: 100vw;
+}
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Inter, system-ui, Segoe UI, Roboto, Helvetica Neue, Arial;
+  color: var(--text);
+  /* Lighter background gradient for a subtle lift */
+  background: linear-gradient(180deg, var(--bg) 0%, #f0f4f8 100%);
+}
+body {
+  width: 100vw;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+.app {
+  min-width: 100vw;
+  margin: 0 auto;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 240px 1fr; /* Slightly narrower sidebar */
+  gap: 24px;
+  width: 100vw;
+}
+.sidebar {
+  /* Solid white with a clean, visible shadow */
+  background: var(--bg);
+  padding: 20px 16px;
+  border-radius: var(--radius);
+  min-height: 100vh;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-right: 1px solid #e9ecef; /* Subtle divider */
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding-left: 4px;
+}
+.logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 18px;
+  color: #fff;
+}
+.brand h1 {
+  font-size: 17px;
+  margin: 0;
+  color: var(--text); /* Black for professionalism */
+}
+.small {
+  font-size: 12px;
+  color: var(--muted);
+}
+.nav {
+  margin-top: 14px;
+}
+.nav a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px; /* Improved padding for alignment */
+  border-radius: 8px;
+  color: var(--text);
+  text-decoration: none;
+  margin-bottom: 6px;
+  font-size: 14px;
+  transition: background 0.2s, color 0.2s;
+  font-weight: 500;
+}
+.nav a.active, .nav a:hover {
+  background: var(--accent); /* Attractive blue background for active/hover */
+  color: var(--bg); /* White text on blue for visibility */
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+}
+.nav a span.icon {
+  display: inline-grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  background: transparent;
+  border-radius: 6px;
+  font-size: 16px;
+}
+.nav a.active span.icon {
+  filter: brightness(1.5); /* Make icon stand out slightly on dark background */
+}
+.main {
+  min-height: 100vh;
+  padding: 30px; /* Increased padding for more breathing room */
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03); /* Subtle main shadow */
+}
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.search {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background: var(--bg); /* White background for search */
+  border: 1px solid #ced4da;
+  padding: 8px 14px;
+  border-radius: 8px;
+  min-width: 320px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+.search input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
+  width: 100%;
+  font-size: 15px;
+}
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 30px;
+}
+.card {
+  /* Solid white with a clear, professional shadow */
+  background: var(--bg);
+  padding: 24px;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  border-left: 4px solid var(--accent); /* Accent border for visibility */
+  transition: transform 0.2s;
+}
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+.card h3 {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.card p {
+  margin: 12px 0 0;
+  font-weight: 700;
+  font-size: 26px; /* Slightly larger for impact */
+  color: var(--accent);
+}
+.panel {
+  /* Solid white, subtle shadow */
+  background: var(--bg);
+  padding: 24px;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+.panel h2 {
+  margin: 0 0 18px;
+  font-size: 20px;
+  color: var(--text);
+  border-bottom: 1px solid #f0f4f8;
+  padding-bottom: 10px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+th, td {
+  padding: 15px 12px; /* Increased vertical padding */
+  text-align: left;
+  border-bottom: 1px solid #e9ecef; /* Lighter border */
+}
+th {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  background: var(--card); /* Subtle heading background */
+}
+tr:hover td {
+  background: #fcfdff; /* Very light hover for visibility */
+}
+.btn {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 18px;
+  border-radius: 8px; /* Slightly smaller radius for buttons */
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Clear, visible shadow */
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  text-decoration: none; /* Ensure anchor buttons look like buttons */
+}
+.btn:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+.btn.primary {
+  background: var(--accent);
+  color: #fff;
+}
+.btn.primary:hover {
+    background: var(--accent-2);
+}
+.btn.ghost {
+  background: transparent;
+  border: 1px solid var(--accent); /* Thinner border for ghost */
+  color: var(--accent);
+  box-shadow: none;
+}
+.btn.ghost:hover {
+  background: rgba(0, 123, 255, 0.05);
+  box-shadow: none;
+}
+/* Modal & Backdrop Visibility */
+.modal-backdrop {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.4); /* Darker backdrop for focus */
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+.modal {
+    background: var(--bg);
+    padding: 30px;
+    border-radius: var(--radius);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    min-width: 350px;
+    max-width: 90%;
+}
+.modal h3 {
+    margin-top: 0;
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    color: var(--accent);
+}
+.modal .actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+/* Form/Input Styling */
+label {
+    display: block;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 4px;
+    margin-top: 10px;
+    font-weight: 600;
+}
+input[type="text"], input[type="number"], input[type="date"], input[type="datetime-local"], select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--bg);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+input[type="text"]:focus, input[type="number"]:focus, input[type="date"]:focus, input[type="datetime-local"]:focus, select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    outline: none;
+}
+/* Grid for Forms (Added for Alignment) */
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+/* Toolbar Styling for Better Visibility */
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 10px;
+}
+.toolbar h2 {
+    margin: 0;
+    font-size: 20px;
+}
+.toolbar .filters {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+.toolbardisplayflexjustify-contentspace-betweenalign-itemscentermargin-bottom12px .filtersdisplayflexgap8pxalign-itemscenter inputtypeselect,select,inputbackgroundtransparentborder1px solid rgba255,255,255,0.04padding8pxborder-radius8pxcolorvar--text .avatarwidth36pxheight36pxborder-radius10pxbackgroundlinear-gradient135deg,1f2937,111827displayinline-gridplace-itemscenter
+.avatar {
+    width: 32px; /* Smaller and more refined avatar */
+    height: 32px;
+    border-radius: 50%; /* Circle for a professional look */
+    background: var(--accent);
+    display: inline-grid;
+    place-items: center;
+    font-weight: 600;
+    color: #fff;
+    font-size: 14px;
+    border: 2px solid var(--bg);
+    box-shadow: 0 0 0 1px var(--accent);
+}
+
+@media (max-width: 980px) {
+  .cards { grid-template-columns: repeat(2, 1fr); }
+  .app { grid-template-columns: 1fr; }
+  .sidebar { min-height: unset; padding-bottom: 0;}
+  .main { padding: 20px; }
+}
+@media (max-width: 640px) {
+  .cards { grid-template-columns: 1fr; }
+  .topbar { flex-wrap: wrap; gap: 10px; }
+  .search { min-width: 100%; order: 3; }
+  .grid-2 { grid-template-columns: 1fr; }
+}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">SK</div>
+        <div>
+          <h1>HealthCare Admin</h1>
+          <div class="small">Hospital & Management System</div>
+        </div>
+      </div>
+      <nav class="nav" id="mainNav">
+        <a href="#" data-page="dashboard" class="active"><span class="icon">🏠</span> Dashboard</a>
+        <a href="#" data-page="patients"><span class="icon">🧑‍🤝‍🧑</span> Patients</a>
+        <a href="#" data-page="patientProfiles"><span class="icon">📇</span> Patient Profiles</a>
+        <a href="#" data-page="doctors"><span class="icon">🩺</span> Doctors</a>
+        <a href="#" data-page="appointments"><span class="icon">📅</span> Appointments</a>
+        <a href="#" data-page="billing"><span class="icon">💳</span> Billing</a>
+        <a href="#" data-page="inventory"><span class="icon">📦</span> Inventory</a>
+        <a href="#" data-page="feedbacks"><span class="icon">💬</span> Feedback</a>
+        <a href="#" data-page="settings"><span class="icon">⚙️</span> Settings</a>
+      </nav>
+      <div style="margin-top:18px" class="small">Logged in as <strong>Admin</strong></div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div class="search"><span>🔎</span><input id="globalSearch" placeholder="Search patients, doctors, appointments..."/></div>
+        <button class="btn ghost" onclick="showNotifications()">🔔 Notifications</button>
+        <div style="display:flex;gap:12px;align-items:center">
+          <div class="small">Today: <strong id="todayDate"></strong></div>
+          <button class="btn ghost" id="addQuickBtn">+ Add</button>
+          <div class="avatar">A</div>
+             <!-- ✅ Logout button -->
+          <button class="btn ghost" onclick="logout()">Logout</button>
+        </div>
+      </div>
+<div class="modal-backdrop" id="notifBackdrop">
+  <div class="modal">
+    <h3>Pending Appointment Requests</h3>
+    <div id="notifList"></div>
+    <div class="actions"><button class="btn ghost" onclick="closeNotif()">Close</button></div>
+  </div>
+</div>
+      <!-- Dashboard view -->
+      <section id="dashboard" class="view">
+        <div class="cards">
+          <div class="card">
+            <h3>Total Patients</h3>
+            <p id="statPatients">0</p>
+          </div>
+          <div class="card">
+            <h3>Doctors</h3>
+            <p id="statDoctors">0</p>
+          </div>
+          <div class="card">
+            <h3>Upcoming Appts</h3>
+            <p id="statAppts">0</p>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Recent Appointments</h2>
+          <div id="recentAppts"></div>
+        </div>
+      </section>
+      <!-- Feedbacks -->
+<section id="feedbacks" class="view" style="display:none">
+  <div class="toolbar">
+    <h2>Patient Feedback</h2>
+    <div class="filters">
+      <button class="btn ghost" id="refreshFeedbacks">🔄 Refresh</button>
+    </div>
+  </div>
+  <div class="panel">
+    <table id="fbTable">
+      <thead>
+        <tr>
+          <th>S.no</th>
+          <th>User</th>
+          <th>Feedback</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</section>
+
+      <!-- Patients -->
+      <section id="patients" class="view" style="display:none">
+        <div class="toolbar">
+          <h2>Patients</h2>
+          <div class="filters">
+            <input id="filterPatient" placeholder="Filter by name or phone" />
+            <button class="btn primary" id="newPatient">+ New Patient</button>
+          </div>
+        </div>
+        <div class="panel">
+          <table id="patientsTable">
+            <thead><tr><th>S.no</th><th>Name</th><th>Phone</th><th>Age / Sex</th><th>Actions</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Patient Profiles -->
+      <section id="patientProfiles" class="view" style="display:none">
+        <div class="toolbar">
+          <h2>Patient Profiles</h2>
+          <div class="filters">
+            <input id="filterProfile" placeholder="Filter by name, phone, district..." />
+            <button class="btn ghost" id="refreshProfiles">Refresh</button>
+          </div>
+        </div>
+        <div class="panel">
+          <table id="profilesTable">
+            <thead><tr><th>#</th><th>Name</th><th>Mobile</th><th>D.O.B</th><th>Gender</th><th>District / City</th><th>Email</th><th>Blood</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Doctors -->
+      <section id="doctors" class="view" style="display:none">
+        <div class="toolbar">
+          <h2>Doctors</h2>
+          <div class="filters">
+            <input id="filterDoctor" placeholder="Filter by name or speciality" />
+            <button class="btn primary" id="newDoctor">+ New Doctor</button>
+          </div>
+        </div>
+        <div class="panel">
+          <table id="doctorsTable">
+            <thead><tr><th>#</th><th>Name</th><th>Speciality</th><th>Phone</th><th>Actions</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Appointments -->
+      <section id="appointments" class="view" style="display:none">
+        <div class="toolbar">
+          <h2>Appointments</h2>
+          <div class="filters">
+            <select id="filterApptDoctor"><option value="">All Doctors</option></select>
+            <input id="filterApptDate" type="date" />
+            <button class="btn primary" id="newAppt">+ New Appointment</button>
+          </div>
+        </div>
+        <div class="panel">
+          <table id="apptsTable">
+            <thead><tr><th>#</th><th>Patient</th><th>Doctor</th><th>Date & Time</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Billing -->
+      <section id="billing" class="view" style="display:none">
+        <div class="toolbar"><h2>Billing & Invoices</h2><div class="filters"><button class="btn primary" id="newInvoice">+ New Invoice</button></div></div>
+        <div class="panel" id="billingPanel">
+          <table id="billingTable">
+            <thead><tr><th>#</th><th>Patient</th><th>Amount</th><th>Date</th><th>Status</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Inventory -->
+      <section id="inventory" class="view" style="display:none">
+        <div class="toolbar"><h2>Inventory</h2><div class="filters"><button class="btn primary" id="newStock">+ Add Stock</button></div></div>
+        <div class="panel">
+          <table id="inventoryTable"><thead><tr><th>#</th><th>Item</th><th>Qty</th><th>Expiry</th><th>Actions</th></tr></thead><tbody></tbody></table>
+        </div>
+      </section>
+
+      <!-- Settings -->
+      <section id="settings" class="view" style="display:none">
+        <div class="panel"><h2>Settings</h2>
+          <div class="grid-2">
+            <div>
+              <label>Hospital Name</label>
+              <input id="settingName" />
+            </div>
+            <div>
+              <label>Default Currency</label>
+              <input id="settingCurrency" />
+            </div>
+          </div>
+          <div class="actions"><button class="btn primary" id="saveSettings">Save Settings</button></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Modal markup -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal" id="modal">
+      <h3 id="modalTitle">Modal</h3>
+      <div id="modalBody"></div>
+      <div class="actions"><button class="btn ghost" id="closeModal">Cancel</button><button class="btn primary" id="saveModal">Save</button></div>
+    </div>
+  </div>
+  <script>
+  // check login
+  if(localStorage.getItem("hc_logged_in")!=="true"){
+    window.location.href="login.html"; // force login if not authenticated
+  }
+</script>
+<script>
+  function logout(){
+    localStorage.removeItem("hc_logged_in");
+    window.location.href="login.html"; // back to login page
+  }
+</script>
+<script>
+function showNotifications(){
+  const list=JSON.parse(localStorage.getItem("pendingAppointments")||"[]");
+  const box=document.getElementById("notifList");
+  box.innerHTML="";
+  if(!list.length){ box.innerHTML="<p class='small'>No pending requests</p>"; }
+  else{
+    list.forEach((r,i)=>{
+      const div=document.createElement("div");
+      div.style.margin="10px 0";
+      div.innerHTML=`
+        <strong>${r.name}</strong> (${r.phone})<br>
+        Dept: ${r.dept}, ${r.date} ${r.time}<br>
+        <button class="btn primary" onclick="acceptAppt('${r.id}')">Accept</button>
+        <button class="btn ghost" onclick="declineAppt('${r.id}')">Decline</button>
+      `;
+      box.appendChild(div);
+    });
+  }
+  document.getElementById("notifBackdrop").style.display="flex";
+}
+function closeNotif(){ document.getElementById("notifBackdrop").style.display="none"; }
+</script>
+
+<script>
+/* --- Single canonical accept/decline functions (ensures profile sync) --- */
+function acceptAppt(id){
+  let list = JSON.parse(localStorage.getItem("pendingAppointments") || "[]");
+  const appt = list.find(x => x.id === id);
+  if(!appt){ alert("Appointment not found"); return; }
+
+  // create or find patient in state
+  let patient = state.patients.find(p=> p.phone === appt.phone );
+  if(!patient){
+    patient = { id: uid('p'), name: appt.name || 'Unknown', phone: appt.phone || '', age: appt.age || 0, sex: appt.sex || '' };
+    state.patients.push(patient);
+  }
+
+  // ensure there's a doctor matching dept, else create placeholder
+  let doctor = state.doctors.find(d=> d.spec && appt.dept && d.spec.toLowerCase().includes(appt.dept.toLowerCase()));
+  if(!doctor){
+    doctor = { id: uid('d'), name: "Dr. " + (appt.dept || 'General') + " Specialist", spec: appt.dept || 'General', phone: "" };
+    state.doctors.push(doctor);
+  }
+
+  // save appt into admin state
+  state.appts.push({
+    id: uid('a'),
+    patientId: patient.id,
+    doctorId: doctor.id,
+    datetime: new Date((appt.date || '') + 'T' + (appt.time || '00:00')).toISOString(),
+    status: "Scheduled"
+  });
+
+  // Also save into patient-facing "allAppointments" so patient sees the update
+  let all = JSON.parse(localStorage.getItem("allAppointments") || "[]");
+  all.push({
+    userId: appt.userId,
+    dept: appt.dept,
+    date: appt.date,
+    time: appt.time,
+    status: "Accepted",
+    doctor: doctor.name,
+    notification: "Your appointment is accepted!"
+  });
+  localStorage.setItem("allAppointments", JSON.stringify(all));
+
+  // Save a patient profile (minimal) into patientProfiles so Admin -> Patient Profiles shows it.
+  let profiles = JSON.parse(localStorage.getItem("patientProfiles")||"[]");
+  let found = profiles.find(p => p.mobile === appt.phone || p.userId === appt.userId);
+  if(!found){
+    const profile = {
+      id: "pp" + Date.now(),
+      userId: appt.userId || null,
+      name: appt.name || patient.name,
+      dob: "",
+      gender: appt.sex || patient.sex || "",
+      blood: "",
+      mobile: appt.phone || patient.phone,
+      altmobile: "",
+      father: "",
+      mother: "",
+      district: "",
+      city: "",
+      state: "",
+      email: "",
+      createdAt: new Date().toISOString()
+    };
+    profiles.push(profile);
+    localStorage.setItem("patientProfiles", JSON.stringify(profiles));
+  } else {
+    // if exists but missing userId, try to attach
+    if(!found.userId && appt.userId) { found.userId = appt.userId; localStorage.setItem("patientProfiles", JSON.stringify(profiles)); }
+  }
+
+  // remove from pending
+  list = list.filter(x => x.id !== id);
+  localStorage.setItem("pendingAppointments", JSON.stringify(list));
+
+  save(); renderPatients(); renderDoctors(); renderAppts(); renderRecentAppts(); renderStats(); renderPatientProfiles();
+  showNotifications();
+  alert("✅ Appointment Accepted");
+}
+
+function declineAppt(id){
+  let list = JSON.parse(localStorage.getItem("pendingAppointments") || "[]");
+  const appt = list.find(x => x.id === id);
+  if(appt){
+    // also notify patient in allAppointments
+    let all = JSON.parse(localStorage.getItem("allAppointments") || "[]");
+    all.push({
+      userId: appt.userId,
+      dept: appt.dept,
+      date: appt.date,
+      time: appt.time,
+      status: "Declined",
+      doctor: "",
+      notification: "❌ Sorry, your appointment request was declined."
+    });
+    localStorage.setItem("allAppointments", JSON.stringify(all));
+  }
+  list = list.filter(x => x.id !== id);
+  localStorage.setItem("pendingAppointments", JSON.stringify(list));
+  showNotifications();
+  alert("❌ Appointment Declined");
+}
+</script>
+<script>
+    window.editAppt = (id) => {
+      const a = state.appts.find(x => x.id === id);
+      if (!a) return;
+      openModal('Edit Appointment', `
+        <div class="grid-2">
+          <div>
+            <label>Patient</label>
+            <select id="a_patient">
+              ${state.patients.map(p =>
+                `<option value="${p.id}" ${p.id===a.patientId?'selected':''}>${p.name}</option>`
+              ).join('')}
+            </select>
+          </div>
+          <div>
+            <label>Doctor</label>
+            <select id="a_doctor">
+              ${state.doctors.map(d =>
+                `<option value="${d.id}" ${d.id===a.doctorId?'selected':''}>${d.name} — ${d.spec}</option>`
+              ).join('')}
+            </select>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div>
+            <label>Date</label>
+            <input id="a_dt" type="date" value="${new Date(a.datetime).toISOString().slice(0,10)}"/>
+          </div>
+          <div>
+            <label>Status</label>
+            <select id="a_status">
+              <option ${a.status==='Scheduled'?'selected':''}>Scheduled</option>
+              <option ${a.status==='Completed'?'selected':''}>Completed</option>
+              <option ${a.status==='Cancelled'?'selected':''}>Cancelled</option>
+            </select>
+          </div>
+        </div>
+      `, () => {
+        a.patientId = $('#a_patient').value;
+        a.doctorId = $('#a_doctor').value;
+        a.datetime = new Date($('#a_dt').value).toISOString();
+        a.status = $('#a_status').value;
+        save();
+        renderAppts();
+        renderRecentAppts();
+        renderStats();
+      });
+    };
+
+    window.deleteAppt = (id) => {
+      if (!confirm('Delete appointment?')) return;
+      state.appts = state.appts.filter(x => x.id !== id);
+      save();
+      renderAppts();
+      renderRecentAppts();
+      renderStats();
+    };
+
+    // billing CRUD
+    window.newInvoice = ()=>{ openModal('New Invoice', `
+      <div class="grid-2">
+        <div>
+          <label>Patient</label>
+          <select id="b_patient">
+            ${state.patients.map(p=>`<option value="${p.id}">${p.name}</option>`).join('')}
+          </select>
+        </div>
+        <div>
+          <label>Amount</label>
+          <input id="b_amount" type="number"/>
+        </div>
+      </div>
+    `, ()=>{
+      const inv = {id:uid('b'),patientId:$('#b_patient').value,amount:+$('#b_amount').value,date:new Date().toISOString(),status:'Unpaid'};
+      state.billing.push(inv); save(); renderBilling();
+    }); };
+
+    // inventory CRUD
+    window.newStock = ()=>{ openModal('Add Stock', `
+      <div class="grid-2">
+        <div><label>Item</label><input id="i_item"/></div>
+        <div><label>Qty</label><input id="i_qty" type="number"/></div>
+      </div>
+      <div class="grid-2">
+        <div><label>Expiry</label><input id="i_exp" type="date"/></div>
+        <div></div>
+      </div>
+    `, ()=>{
+      const st = {id:uid('i'),item:$('#i_item').value,qty:+$('#i_qty').value,expiry:$('#i_exp').value};
+      state.inventory.push(st); save(); renderInventory();
+    }); };
+
+    window.editStock = (id)=>{ const it = state.inventory.find(x=>x.id===id);
+      openModal('Edit Stock', `
+        <div class="grid-2">
+          <div><label>Item</label><input id="i_item" value="${it.item}"/></div>
+          <div><label>Qty</label><input id="i_qty" type="number" value="${it.qty}"/></div>
+        </div>
+        <div class="grid-2">
+          <div><label>Expiry</label><input id="i_exp" type="date" value="${it.expiry}"/></div>
+        </div>
+      `, ()=>{
+        it.item=$('#i_item').value;
+        it.qty=+$('#i_qty').value;
+        it.expiry=$('#i_exp').value;
+        save(); renderInventory();
+      });
+    };
+
+    window.deleteStock = (id)=>{ if(!confirm('Delete stock?'))return;
+      state.inventory = state.inventory.filter(x=>x.id!==id); save(); renderInventory(); };
+
+    // feedback rendering (dummy placeholder)
+    function renderFeedbacks(){
+      const tbody = document.querySelector('#fbTable tbody');
+      tbody.innerHTML = '';
+      let list = JSON.parse(localStorage.getItem("feedbacks")||"[]");
+      list.forEach((fb, idx)=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${idx+1}</td><td>${fb.user||'—'}</td><td>${fb.text}</td><td>${new Date(fb.date).toLocaleDateString()}</td><td><button class="btn ghost">View</button></td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    document.getElementById('refreshFeedbacks').addEventListener('click', renderFeedbacks);
+
+    // initial load
+    load(); seed();
+    renderStats(); renderPatients(); renderDoctors(); renderAppts(); renderBilling(); renderInventory(); renderPatientProfiles(); renderFeedbacks();
+    document.getElementById('todayDate').textContent = new Date().toLocaleDateString();
+    $('#filterPatient').addEventListener('input', e=> renderPatients(e.target.value));
+    $('#filterDoctor').addEventListener('input', e=> renderDoctors(e.target.value));
+    $('#filterApptDoctor').addEventListener('change', e=> renderAppts(e.target.value,$('#filterApptDate').value));
+    $('#filterApptDate').addEventListener('change', e=> renderAppts($('#filterApptDoctor').value,e.target.value));
+    $('#filterProfile').addEventListener('input', e=> renderPatientProfiles(e.target.value));
+    $('#refreshProfiles').addEventListener('click', ()=>renderPatientProfiles($('#filterProfile').value));
+</script>
+
+  <script>
+    // --- Simple client-only frontend for admin panel ---
+    const state = {
+      patients: [], doctors: [], appts: [], billing: [], inventory: [], settings: {name:'HealCare Clinic', currency:'INR'}
+    };
+
+    // utils
+    const $ = sel => document.querySelector(sel);
+    const $$ = sel => Array.from(document.querySelectorAll(sel));
+    function uid(prefix='id'){return prefix+Math.random().toString(36).slice(2,9)}
+
+    // load/save localStorage
+    function save(){localStorage.setItem('hc_state', JSON.stringify(state));}
+    function load(){const s = localStorage.getItem('hc_state'); if(s) Object.assign(state, JSON.parse(s));}
+
+    // initial seed data
+    function seed(){ if(state.patients.length) return; state.patients = [
+      {id:uid('p'),name:'Ravi Kumar',phone:'9876543210',age:36,sex:'M'},
+      {id:uid('p'),name:'Meena Iyer',phone:'9123456780',age:29,sex:'F'}];
+      state.doctors = [ {id:uid('d'),name:'Dr. Ajay Nair',spec:'Cardiology',phone:'9001112223'}, {id:uid('d'),name:'Dr. Sima Rao',spec:'General Physician',phone:'9001113334'}];
+      state.appts = [ {id:uid('a'),patientId:state.patients[0].id,doctorId:state.doctors[0].id,datetime:new Date(Date.now()+86400000).toISOString(),status:'Scheduled'}, {id:uid('a'),patientId:state.patients[1].id,doctorId:state.doctors[1].id,datetime:new Date().toISOString(),status:'Completed'}];
+      state.billing = [ {id:uid('b'),patientId:state.patients[0].id,amount:3200,date:new Date().toISOString(),status:'Paid'}];
+      state.inventory = [ {id:uid('i'),item:'Paracetamol 500mg',qty:120,expiry:'2026-02-01'}, {id:uid('i'),item:'Syringe 5ml',qty:500,expiry:''}];
+      save(); }
+
+    // renderers
+    function renderStats(){ $('#statPatients').textContent = state.patients.length; $('#statDoctors').textContent = state.doctors.length; $('#statAppts').textContent = state.appts.filter(a=> new Date(a.datetime) > new Date()).length; }
+
+    function renderRecentAppts(){ const box = $('#recentAppts'); box.innerHTML=''; const rows = state.appts.slice().sort((a,b)=> new Date(b.datetime)-new Date(a.datetime)).slice(0,6); if(!rows.length) box.innerHTML='<div class="small">No appointments yet</div>'; else{
+      const t = document.createElement('table'); t.innerHTML = '<thead><tr><th>Patient</th><th>Doctor</th><th>Date</th><th>Status</th></tr></thead>';
+      const tb = document.createElement('tbody'); rows.forEach(r=>{ const p=state.patients.find(x=>x.id==r.patientId)||{}; const d=state.doctors.find(x=>x.id==r.doctorId)||{}; const tr=document.createElement('tr'); tr.innerHTML = `<td>${p.name||'—'}</td><td>${d.name||'—'}</td><td>${new Date(r.datetime).toLocaleString()}</td><td>${r.status}</td>`; tb.appendChild(tr); }); t.appendChild(tb); box.appendChild(t);
+    }}
+
+    function renderTable(tableId, data, renderRow){ const tb = $(tableId+' tbody'); if(!tb) return; tb.innerHTML=''; data.forEach((row,idx)=>{ const tr = document.createElement('tr'); tr.innerHTML = renderRow(row, idx); tb.appendChild(tr); }); }
+
+    function renderPatients(filter=''){ const rows = state.patients.filter(p=> (p.name+''+p.phone).toLowerCase().includes(filter.toLowerCase())); renderTable('#patientsTable', rows, (p,idx)=>`<td>${idx+1}</td><td>${p.name}</td><td>${p.phone}</td><td>${p.age} / ${p.sex}</td><td><button class="btn ghost" onclick="editPatient('${p.id}')">Edit</button> <button class="btn" onclick="deletePatient('${p.id}')">Delete</button></td>`); }
+
+    function renderDoctors(filter=''){ const rows = state.doctors.filter(d=> (d.name+d.spec+d.phone).toLowerCase().includes(filter.toLowerCase())); renderTable('#doctorsTable', rows, (d,idx)=>`<td>${idx+1}</td><td>${d.name}</td><td>${d.spec}</td><td>${d.phone}</td><td><button class="btn ghost" onclick="editDoctor('${d.id}')">Edit</button> <button class="btn" onclick="deleteDoctor('${d.id}')">Delete</button></td>`); updateApptDoctorFilter(); }
+
+    function renderAppts(filterDoctor='', filterDate=''){ let rows = state.appts.slice(); if(filterDoctor) rows = rows.filter(a=>a.doctorId===filterDoctor); if(filterDate) rows = rows.filter(a=> (new Date(a.datetime).toISOString().slice(0,10)===filterDate)); renderTable('#apptsTable', rows, (a,idx)=>{ const p=state.patients.find(x=>x.id==a.patientId)||{}; const d=state.doctors.find(x=>x.id==a.doctorId)||{}; return `<td>${idx+1}</td><td>${p.name||'—'}</td><td>${d.name||'—'}</td><td>${new Date(a.datetime).toLocaleString()}</td><td>${a.status}</td><td><button class="btn ghost" onclick="editAppt('${a.id}')">Edit</button> <button class="btn" onclick="deleteAppt('${a.id}')">Delete</button></td>` }); }
+
+    function renderBilling(){ renderTable('#billingTable', state.billing, (b,idx)=>{ const p=state.patients.find(x=>x.id==b.patientId)||{}; return `<td>${idx+1}</td><td>${p.name||'—'}</td><td>${state.settings.currency} ${b.amount}</td><td>${new Date(b.date).toLocaleDateString()}</td><td>${b.status}</td>` }); }
+
+    function renderInventory(){ renderTable('#inventoryTable', state.inventory, (it,idx)=>`<td>${idx+1}</td><td>${it.item}</td><td>${it.qty}</td><td>${it.expiry||'—'}</td><td><button class="btn ghost" onclick="editStock('${it.id}')">Edit</button> <button class="btn" onclick="deleteStock('${it.id}')">Delete</button></td>`); }
+
+    function updateApptDoctorFilter(){ const sel = $('#filterApptDoctor'); sel.innerHTML = '<option value="">All Doctors</option>'; state.doctors.forEach(d=>{const o = document.createElement('option'); o.value = d.id; o.textContent = d.name+' — '+d.spec; sel.appendChild(o)}); }
+
+    // render patient profiles (new)
+    function renderPatientProfiles(filter=''){
+      const profiles = JSON.parse(localStorage.getItem("patientProfiles")||"[]");
+      const rows = profiles.filter(p=> {
+        const q = (filter||'').toLowerCase();
+        return !q || ( (p.name||'').toLowerCase().includes(q) || (p.mobile||'').includes(q) || (p.district||'').toLowerCase().includes(q) || (p.city||'').toLowerCase().includes(q) );
+      });
+      renderTable('#profilesTable', rows, (p, idx) => {
+        return `<td>${idx+1}</td>
+                <td>${p.name||'—'}</td>
+                <td>${p.mobile||'—'}</td>
+                <td>${p.dob||'—'}</td>
+                <td>${p.gender||'—'}</td>
+                <td>${(p.district||'')}${p.city?'/'+p.city:''}</td>
+                <td>${p.email||'—'}</td>
+                <td>${p.blood||'—'}</td>`;
+      });
+    }
+
+    // navigation
+    $$('#mainNav a').forEach(a=> a.addEventListener('click', e=>{ e.preventDefault(); $$('#mainNav a').forEach(x=>x.classList.remove('active')); a.classList.add('active'); showView(a.dataset.page); }));
+    function showView(id){ $$('.view').forEach(v=> v.style.display = v.id===id ? 'block' : 'none'); if(id==='dashboard'){ renderRecentAppts(); } if(id==='patientProfiles'){ renderPatientProfiles($('#filterProfile').value||''); } }
+
+    // modal helpers
+    function openModal(title, contentHTML, onSave){ $('#modalTitle').textContent = title; $('#modalBody').innerHTML = contentHTML; $('#modalBackdrop').style.display = 'flex'; $('#saveModal').onclick = ()=>{ onSave(); closeModal(); }; }
+    function closeModal(){ $('#modalBackdrop').style.display = 'none'; }
+    $('#closeModal').addEventListener('click', closeModal);
+
+    // CRUD functions for patients
+    window.newPatient = ()=>{ openModal('New Patient', `
+      <div class="grid-2">
+        <div><label>Name</label><input id="m_name"/></div>
+        <div><label>Phone</label><input id="m_phone"/></div>
+      </div>
+      <div class="grid-2">
+        <div><label>Age</label><input id="m_age" type="number"/></div>
+        <div><label>Sex</label><select id="m_sex"><option>F</option><option>M</option><option>Other</option></select></div>
+      </div>
+      `, ()=>{ const p = {id:uid('p'),name:$('#m_name').value||'Unknown', phone:$('#m_phone').value||'', age:$('#m_age').value||0, sex:$('#m_sex').value||''}; state.patients.push(p); save(); renderPatients(); renderStats(); }); }
+    window.editPatient = (id)=>{ const p=state.patients.find(x=>x.id===id); openModal('Edit Patient', `
+      <div class="grid-2">
+        <div><label>Name</label><input id="m_name" value="${p.name||''}"/></div>
+        <div><label>Phone</label><input id="m_phone" value="${p.phone||''}"/></div>
+      </div>
+      <div class="grid-2">
+        <div><label>Age</label><input id="m_age" type="number" value="${p.age||''}"/></div>
+        <div><label>Sex</label><select id="m_sex"><option ${p.sex==='F'?'selected':''}>F</option><option ${p.sex==='M'?'selected':''}>M</option><option ${p.sex==='Other'?'selected':''}>Other</option></select></div>
+      </div>
+      `, ()=>{ p.name=$('#m_name').value;p.phone=$('#m_phone').value;p.age=$('#m_age').value;p.sex=$('#m_sex').value; save(); renderPatients(); renderStats(); }); }
+    window.deletePatient = (id)=>{ if(!confirm('Delete patient?'))return; state.patients = state.patients.filter(x=>x.id!==id); state.appts = state.appts.filter(a=> a.patientId!==id); state.billing = state.billing.filter(b=> b.patientId!==id); save(); renderPatients(); renderAppts(); renderBilling(); renderStats(); }
+
+    // doctors
+    window.newDoctor = ()=>{ openModal('New Doctor', `
+      <div class="grid-2"><div><label>Name</label><input id="d_name"/></div><div><label>Spec</label><input id="d_spec"/></div></div>
+      <div class="grid-2"><div><label>Phone</label><input id="d_phone"/></div><div></div></div>
+      `, ()=>{ const d={id:uid('d'),name:$('#d_name').value||'Dr. Unknown', spec:$('#d_spec').value||'General', phone:$('#d_phone').value||''}; state.doctors.push(d); save(); renderDoctors(); renderStats(); }); }
+    window.editDoctor = (id)=>{ const d=state.doctors.find(x=>x.id===id); openModal('Edit Doctor', `<div class="grid-2"><div><label>Name</label><input id="d_name" value="${d.name||''}"/></div><div><label>Spec</label><input id="d_spec" value="${d.spec||''}"/></div></div><div class="grid-2"><div><label>Phone</label><input id="d_phone" value="${d.phone||''}"/></div></div>`, ()=>{ d.name=$('#d_name').value; d.spec=$('#d_spec').value; d.phone=$('#d_phone').value; save(); renderDoctors(); renderAppts(); }); }
+    window.deleteDoctor = (id)=>{ if(!confirm('Delete doctor?'))return; state.doctors = state.doctors.filter(x=>x.id!==id); state.appts = state.appts.filter(a=> a.doctorId!==id); save(); renderDoctors(); renderAppts(); renderStats(); }
+
+    // appointments
+    window.newAppt = ()=>{ openModal('New Appointment', `
+      <div class="grid-2">
+        <div><label>Patient</label><select id="a_patient">${state.patients.map(p=>`<option value="${p.id}">${p.name}</option>`).join('')}</select></div>
+        <div><label>Doctor</label><select id="a_doctor">${state.doctors.map(d=>`<option value="${d.id}">${d.name} — ${d.spec}</option>`).join('')}</select></div>
+      </div>
+      <div class="grid-2">
+        <div><label>Date</label><input id="a_dt" type="date" value="${new Date().toISOString().slice(0,10)}"/></div>
+        <div><label>Status</label><select id="a_status"><option>Scheduled</option><option>Completed</option><option>Cancelled</option></select></div>
+      </div>
+      `, ()=>{ const a={id:uid('a'),patientId:$('#a_patient').value,doctorId:$('#a_doctor').value,datetime: new Date($('#a_dt').value).toISOString(),status:$('#a_status').value}; state.appts.push(a); save(); renderAppts(); renderRecentAppts(); renderStats(); }); }
+    window.editAppt = (id)=>{ const a=state.appts.find(x=>x.id===id); openModal('Edit Appointment', `
+      <div class="grid-2"><div><label>Patient</label><select id="a_patient">${state.patients.map(p=>`<option value="${p.id}" ${p.id===a.patientId?'selected':''}>${p.name}</option>`).join('')}</select></div>
+      <div><label>Doctor</label><select id="a_doctor">${state.doctors.map(d=>`<option value="${d.id}" ${d.id===a.doctorId?'selected':''}>${d.name} — ${d.spec}</option>`).join('')}</select></div></div>
+      <div class="grid-2"><div><label>Date & Time</label><input id="a_dt" type="datetime-local" value="${new Date(a.datetime).toISOString().slice(0,16)}"/></div>
+      <div><label>Status</label><select id="a_status"><option ${a.status==='Scheduled'?'selected':''}>Scheduled</option><option ${a.status==='Completed'?'selected':''}>Completed</option><option ${a.status==='Cancelled'?'selected':''}>Cancelled</option></select></div></div>
+      `, ()=>{ a.patientId=$('#a_patient').value; a.doctorId=$('#a_doctor').value; a.datetime=new Date($('#a_dt').value).toISOString(); a.status=$('#a_status').value; save(); renderAppts(); renderRecentAppts(); }); }
+    window.deleteAppt = (id)=>{ if(!confirm('Delete appointment?'))return; state.appts = state.appts.filter(x=>x.id!==id); save(); renderAppts(); renderRecentAppts(); }
+
+    // billing
+    window.newInvoice = ()=>{ openModal('New Invoice', `
+      <div class="grid-2"><div><label>Patient</label><select id="b_patient">${state.patients.map(p=>`<option value="${p.id}">${p.name}</option>`).join('')}</select></div>
+      <div><label>Amount</label><input id="b_amount" type="number"/></div></div>
+      <div class="grid-2"><div><label>Date</label><input id="b_date" type="date" value="${new Date().toISOString().slice(0,10)}"/></div><div><label>Status</label><select id="b_status"><option>Paid</option><option>Unpaid</option></select></div></div>
+      `, ()=>{ const b={id:uid('b'),patientId:$('#b_patient').value,amount:$('#b_amount').value||0,date:new Date($('#b_date').value).toISOString(),status:$('#b_status').value}; state.billing.push(b); save(); renderBilling(); }); }
+
+    // inventory
+    window.newStock = ()=>{ openModal('Add Stock', `
+      <div><label>Item</label><input id="s_item"/></div>
+      <div class="grid-2"><div><label>Quantity</label><input id="s_qty" type="number"/></div><div><label>Expiry (optional)</label><input id="s_exp" type="date"/></div></div>
+      `, ()=>{ const it={id:uid('i'),item:$('#s_item').value||'Item',qty:parseInt($('#s_qty').value)||0,expiry:$('#s_exp').value||''}; state.inventory.push(it); save(); renderInventory(); }); }
+    window.editStock = (id)=>{ const it = state.inventory.find(x=>x.id===id); openModal('Edit Stock', `<div><label>Item</label><input id="s_item" value="${it.item||''}"/></div><div class="grid-2"><div><label>Quantity</label><input id="s_qty" type="number" value="${it.qty||0}"/></div><div><label>Expiry</label><input id="s_exp" type="date" value="${it.expiry||''}"/></div></div>`, ()=>{ it.item=$('#s_item').value; it.qty=parseInt($('#s_qty').value)||0; it.expiry=$('#s_exp').value; save(); renderInventory(); }); }
+    window.deleteStock = (id)=>{ if(!confirm('Delete stock item?'))return; state.inventory = state.inventory.filter(x=>x.id!==id); save(); renderInventory(); }
+
+    // settings
+    $('#saveSettings').addEventListener('click', ()=>{ state.settings.name = $('#settingName').value; state.settings.currency = $('#settingCurrency').value; save(); alert('Saved settings'); });
+
+    // search and filters
+    $('#filterPatient').addEventListener('input', ()=> renderPatients($('#filterPatient').value));
+    $('#filterDoctor').addEventListener('input', ()=> renderDoctors($('#filterDoctor').value));
+    $('#filterApptDoctor').addEventListener('change', ()=> renderAppts($('#filterApptDoctor').value, $('#filterApptDate').value));
+    $('#filterApptDate').addEventListener('change', ()=> renderAppts($('#filterApptDoctor').value, $('#filterApptDate').value));
+    $('#globalSearch').addEventListener('input', ()=>{ const q = $('#globalSearch').value.toLowerCase(); // quick search across modules
+      const p = state.patients.filter(x=> (x.name+x.phone).toLowerCase().includes(q)); const d = state.doctors.filter(x=> (x.name+x.spec).toLowerCase().includes(q)); if(p.length) { showView('patients'); renderPatients(q); $$('#mainNav a').forEach(x=>x.classList.remove('active')); document.querySelector('[data-page="patients"]').classList.add('active'); } else if(d.length){ showView('doctors'); renderDoctors(q); $$('#mainNav a').forEach(x=>x.classList.remove('active')); document.querySelector('[data-page="doctors"]').classList.add('active'); } });
+
+    // quick add button
+    $('#addQuickBtn').addEventListener('click', ()=>{ openModal('Quick Add', `<div class="grid-2"><div><label>Type</label><select id="quickType"><option value="patient">Patient</option><option value="doctor">Doctor</option><option value="appt">Appointment</option></select></div><div></div></div>`, ()=>{ const t = $('#quickType').value; if(t==='patient') newPatient(); else if(t==='doctor') newDoctor(); else newAppt(); }); });
+
+    // wire up new buttons
+    $('#newPatient').addEventListener('click', ()=> newPatient()); $('#newDoctor').addEventListener('click', ()=> newDoctor()); $('#newAppt').addEventListener('click', ()=> newAppt()); $('#newInvoice').addEventListener('click', ()=> newInvoice()); $('#newStock').addEventListener('click', ()=> newStock());
+
+    // init
+    (function init(){ load(); seed(); document.getElementById('todayDate').textContent = new Date().toLocaleDateString(); $('#settingName').value = state.settings.name; $('#settingCurrency').value = state.settings.currency; renderStats(); renderPatients(); renderDoctors(); renderAppts(); renderBilling(); renderInventory(); updateApptDoctorFilter(); showView('dashboard'); renderPatientProfiles(); })();
+
+    // small UX: close modal on backdrop click
+    $('#modalBackdrop').addEventListener('click', (e)=>{ if(e.target===$('#modalBackdrop')) closeModal(); });
+    function renderFeedbacks(){
+  const fb = JSON.parse(localStorage.getItem("feedbacks")||"[]");
+  const users = JSON.parse(localStorage.getItem("hc_users")||"[]");
+  const tb = document.querySelector("#fbTable tbody");
+  tb.innerHTML = "";
+
+  if(!fb.length){
+    tb.innerHTML = "<tr><td colspan='5'>No feedback yet</td></tr>";
+    return;
+  }
+
+  fb.forEach((f,idx)=>{
+    const user = users.find(u=>u.id===f.userId) || {};
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${idx+1}</td>
+      <td>${user.username||'Unknown'}</td>
+      <td>${f.text}</td>
+      <td>${f.date}</td>
+      <td><button class="btn ghost" onclick="deleteFeedback(${idx})">Remove</button></td>
+    `;
+    tb.appendChild(tr);
+  });
+}
+
+// delete a feedback by index
+function deleteFeedback(index){
+  if(!confirm("Are you sure you want to remove this feedback?")) return;
+  let fb = JSON.parse(localStorage.getItem("feedbacks")||"[]");
+  fb.splice(index, 1); // remove one
+  localStorage.setItem("feedbacks", JSON.stringify(fb));
+  renderFeedbacks();
+}
+
+// refresh button action
+document.getElementById("refreshFeedbacks").addEventListener("click", ()=> renderFeedbacks());
+
+function showView(id){
+  $$('.view').forEach(v=> v.style.display = v.id===id ? 'block' : 'none');
+  if(id==='dashboard'){ renderRecentAppts(); }
+  if(id==='patientProfiles'){ renderPatientProfiles($('#filterProfile').value||''); }
+  if(id==='feedbacks'){ renderFeedbacks(); } // ✅ added
+}
+
+  // filter patients profiles
+  $('#filterProfile').addEventListener('input', ()=>{ renderPatientProfiles($('#filterProfile').value); });
+  $('#refreshProfiles').addEventListener('click', ()=> renderPatientProfiles($('#filterProfile').value||''));
+
+  </script>
+</body>
+</html>

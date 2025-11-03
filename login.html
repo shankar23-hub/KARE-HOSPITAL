@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>HealthCare Admin Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin:0; height:100vh; display:flex; align-items:center; justify-content:center;
+      font-family: Inter, system-ui; 
+      background-size:cover;
+      background-position:center;
+      background-repeat:no-repeat;
+      transition: background-image 1s ease-in-out;
+      color:#e6eef6;
+    }
+    .login-box {
+      width:360px; padding:28px; border-radius:16px;
+      background:rgba(0,0,0,0.55); 
+      box-shadow:0 8px 24px rgba(0,0,0,0.6);
+    }
+    h2{margin:0 0 20px;font-weight:600;text-align:center}
+    label{display:block;margin:12px 0 6px;font-size:14px;color:#d1d5db}
+    input{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);
+      background:rgba(255,255,255,0.1);color:#fff;font-size:14px}
+    button{width:100%;padding:12px;margin-top:18px;border:0;border-radius:10px;
+      background:linear-gradient(90deg,#06b6d4,#7c3aed);color:#fff;font-weight:600;cursor:pointer}
+    .error{color:#f87171;font-size:13px;text-align:center;margin-top:10px}
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>HealthCare Admin Login</h2>
+    <form id="loginForm">
+      <label>Username</label>
+      <input type="text" id="username" required>
+      <label>Password</label>
+      <input type="password" id="password" required>
+      <button type="submit">Login</button>
+      <div id="errorBox" class="error"></div>
+    </form>
+  </div>
+
+<script>
+  // Background images array
+  const images = [
+    "1 Reception.png",
+    "2 Hospital 1.png",
+    "3 Hospital 2.png"
+    // you can add more images like "3 Hallway.png"
+  ];
+
+  let index = 0;
+  function changeBackground(){
+    document.body.style.backgroundImage = `url('${images[index]}')`;
+    index = (index + 1) % images.length;
+  }
+
+  // Initial load
+  changeBackground();
+  // Change every 10 seconds
+  setInterval(changeBackground, 10000);
+
+  // Login script
+  const form=document.getElementById("loginForm");
+  const errorBox=document.getElementById("errorBox");
+
+  form.addEventListener("submit",e=>{
+    e.preventDefault();
+    const u=document.getElementById("username").value.trim();
+    const p=document.getElementById("password").value.trim();
+
+    if(u==="Kare0025" && p==="KARE@2025"){ 
+      localStorage.setItem("hc_logged_in","true");
+      window.location.href="index.html";
+    }else{
+      errorBox.textContent="Invalid username or password!";
+    }
+  });
+  if(localStorage.getItem("hc_logged_in")==="true"){
+    window.location.href="index.html";
+  }
+</script>
+</body>
+</html>
