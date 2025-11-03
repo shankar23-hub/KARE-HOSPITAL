@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account — HealthCare Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="auth-bg">
+    <img src="1 Reception.png" alt="">
+    <img src="2 Hospital 1.png" alt="">
+    <img src="3 Hospital 2.png" alt="">
+    <div class="auth-overlay">
+      <div class="auth-card">
+        <h2>Create Account 🏥</h2>
+        <input type="text" placeholder="Full Name" class="auth-input" id="regName">
+        <input type="email" placeholder="Email Address" class="auth-input" id="regEmail">
+        <input type="password" placeholder="Password" class="auth-input" id="regPass">
+        <button class="auth-btn" onclick="register()">Sign Up</button>
+        <a href="Login.html">Already have an account? Login</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    function register(){
+      const name = document.getElementById('regName').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const pass = document.getElementById('regPass').value.trim();
+      if(name && email && pass){
+        localStorage.setItem('hc_user', JSON.stringify({name,email,pass}));
+        alert('Account created successfully!');
+        window.location.href = 'Login.html';
+      } else {
+        alert('Please fill all fields');
+      }
+    }
+  </script>
+</body>
+</html>

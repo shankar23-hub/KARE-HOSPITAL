@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Billing — HealthCare Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand"><div class="logo">SK</div><div><h1>HealthCare Admin</h1><div class="small">Hospital & Management</div></div></div>
+      <nav class="nav">
+        <a href="Dashboard.html" data-page="dashboard">🏠 Dashboard</a>
+        <a href="Patients.html" data-page="patients">🧑‍🤝‍🧑 Patients</a>
+        <a href="PatientProfiles.html" data-page="patientProfiles">📇 Patient Profiles</a>
+        <a href="Doctors.html" data-page="doctors">🩺 Doctors</a>
+        <a href="Appointments.html" data-page="appointments">📅 Appointments</a>
+        <a href="Billing.html" class="active" data-page="billing">💳 Billing</a>
+        <a href="Inventory.html" data-page="inventory">📦 Inventory</a>
+        <a href="Feedbacks.html" data-page="feedbacks">💬 Feedback</a>
+        <a href="Settings.html" data-page="settings">⚙️ Settings</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <div class="search"><span>🔎</span><input id="globalSearch" placeholder="Search patients, doctors, appointments..."></div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <div class="small-muted">Today: <strong id="todayDate"></strong></div>
+          <button class="btn ghost" id="addQuickBtn">+ Add</button>
+        </div>
+      </div>
+
+      <section>
+        <div class="toolbar">
+          <h2>Billing & Invoices</h2>
+          <div class="filters"><button class="btn primary" id="newInvoice" onclick="newInvoice()">+ New Invoice</button></div>
+        </div>
+
+        <div class="panel">
+          <table id="billingTable">
+            <thead><tr><th>#</th><th>Patient</th><th>Amount</th><th>Date</th><th>Status</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal" id="modal">
+      <h3 id="modalTitle">Modal</h3>
+      <div id="modalBody"></div>
+      <div class="actions" style="margin-top:12px;text-align:right">
+        <button class="btn ghost" id="closeModal">Cancel</button>
+        <button class="btn primary" id="saveModal">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

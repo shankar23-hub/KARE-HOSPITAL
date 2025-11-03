@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — HealthCare Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="auth-bg">
+    <img src="1 Reception.png" alt="">
+    <img src="2 Hospital 1.png" alt="">
+    <img src="3 Hospital 2.png" alt="">
+    <div class="auth-overlay">
+      <div class="auth-card">
+        <h2>Welcome</h2>
+        <input type="text" placeholder="Username or Email" class="auth-input" id="loginUser">
+        <input type="password" placeholder="Password" class="auth-input" id="loginPass">
+        <button class="auth-btn" onclick="login()">Login</button>
+        <a href="CreateAccount.html">Create an account</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    function login(){
+      const user = document.getElementById('loginUser').value.trim();
+      const pass = document.getElementById('loginPass').value.trim();
+      if(user && pass){
+        localStorage.setItem('hc_logged_in', user);
+        window.location.href = 'Dashboard.html';
+      } else {
+        alert('Please enter valid login details');
+      }
+    }
+  </script>
+</body>
+</html>
